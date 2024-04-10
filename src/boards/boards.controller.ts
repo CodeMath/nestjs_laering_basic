@@ -1,19 +1,20 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, UsePipes, ValidationPipe } from '@nestjs/common';
 import { BoardsService } from './boards.service';
 import { Board, BoardStatus } from './boards.models';
 import { CreateBoardDto } from './dto/create-board.dto';
-import { stat } from 'fs';
+import { BoardStatusValidationPipe } from './pipes/board-status-validation.pipe';
 
 @Controller('boards')
 export class BoardsController {
     constructor(private boardsService: BoardsService) { }
 
-    @Get('/')
+    @Get()
     getAllBoard(): Board[] {
         return this.boardsService.getAllBoards();
     }
 
-    @Post('') // 요청을 보낼 때, 정보를 받고 처리해야하므로,
+    @Post() // 요청을 보낼 때, 정보를 받고 처리해야하므로,
+    @UsePipes(ValidationPipe) // 유효성 검증 파이프
     createBoard(
         @Body() CreateBoardDto: CreateBoardDto
     ): Board {
@@ -34,7 +35,7 @@ export class BoardsController {
     @Patch('/:id/status')
     updateBoardStatus(
         @Param('id') id: string, 
-        @Body('status') status: BoardStatus): Board{
+        @Body('status', BoardStatusValidationPipe) status: BoardStatus): Board{
         return this.boardsService.updateBoardStatus(id, status);
     }
 
