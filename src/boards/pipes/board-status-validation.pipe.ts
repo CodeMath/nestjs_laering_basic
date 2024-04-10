@@ -1,6 +1,5 @@
 import { ArgumentMetadata, BadRequestException, PipeTransform } from "@nestjs/common";
 import { BoardStatus } from "../boards.models";
-import { stat } from "fs";
 
 export class BoardStatusValidationPipe implements PipeTransform {
     // 읽기 전용, 외부 접속 가능하나 값 변경 불가
