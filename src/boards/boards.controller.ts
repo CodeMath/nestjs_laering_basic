@@ -1,7 +1,8 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { BoardsService } from './boards.service';
-import { Board } from './boards.models';
+import { Board, BoardStatus } from './boards.models';
 import { CreateBoardDto } from './dto/create-board.dto';
+import { stat } from 'fs';
 
 @Controller('boards')
 export class BoardsController {
@@ -12,7 +13,7 @@ export class BoardsController {
         return this.boardsService.getAllBoards();
     }
 
-    @Post('/new') // 요청을 보낼 때, 정보를 받고 처리해야하므로,
+    @Post('') // 요청을 보낼 때, 정보를 받고 처리해야하므로,
     createBoard(
         @Body() CreateBoardDto: CreateBoardDto
     ): Board {
@@ -25,8 +26,17 @@ export class BoardsController {
         return this.boardsService.getBoardById(id);
     }
 
-    @Delete('remove/:id')
+    @Delete('/:id')
     deleteBoard(@Param('id') id: string){
         return this.boardsService.deleteBoard(id);
     }
+
+    @Patch('/:id/status')
+    updateBoardStatus(
+        @Param('id') id: string, 
+        @Body('status') status: BoardStatus): Board{
+        return this.boardsService.updateBoardStatus(id, status);
+    }
+
+
 }
