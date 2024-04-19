@@ -13,4 +13,9 @@ export class BoardsController {
         return this.boardsService.getAllBoards();
     }
 
+    @Get('/:id')
+    async getBoardById(@Param('id') id: string): Promise<Board> {
+        return this.boardsService.getBoardById({id: String(id)});
+    }
+
 }
