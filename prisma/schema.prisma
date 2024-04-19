@@ -17,10 +17,5 @@ model Board {
   id  String  @id @default(uuid())
   title String  @db.VarChar(20)
   description String  @db.VarChar(100)
-  status  BoardStatus  @default(PUBLIC)
-}
-
-enum BoardStatus {
-  PUBLIC
-  PRIVATE
+  status  String  @db.VarChar(20) @default("PUBLIC")
 }
