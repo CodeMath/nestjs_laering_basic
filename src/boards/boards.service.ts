@@ -1,4 +1,4 @@
-import {  Injectable, NotFoundException } from '@nestjs/common';
+import {  BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { v1 as uuid } from 'uuid'; // v1 버전을 사용한다
 import { CreateBoardDto } from './dto/create-board.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -22,6 +22,18 @@ export class BoardsService {
         });
         
         return found;
+    }
+
+    async createBoard(postData: CreateBoardDto): Promise<Board | never>{
+
+        const new_board = await this.prisma.board.create({
+            data: postData
+        }).catch(error => {
+            throw new BadRequestException(`${error}`);
+        });
+
+        return new_board;
+
     }
 
 }
