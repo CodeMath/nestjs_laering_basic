@@ -54,4 +54,10 @@ export class BoardsService {
 
     }
 
+    async deleteBoard(id: string): Promise<void>{
+        const board = await this.getBoardById({id: id});
+        await this.prisma.board.delete({
+            where: board
+        });
+    }
 }

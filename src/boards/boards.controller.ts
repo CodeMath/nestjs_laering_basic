@@ -34,4 +34,11 @@ export class BoardsController {
         return this.boardsService.changeStatusBoard(id, status);
     }
 
+    @Delete('/:id')
+    async deleteBoard(
+        @Param('id') id: string
+    ): Promise<void> {
+        return this.boardsService.deleteBoard(id);
+    }
+
 }
