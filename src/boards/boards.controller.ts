@@ -3,7 +3,7 @@ import { BoardsService } from './boards.service';
 import { Board } from './boards.models';
 import { CreateBoardDto } from './dto/create-board.dto';
 import { BoardStatusValidationPipe } from './pipes/board-status-validation.pipe';
-import { promises } from 'dns';
+import { pipe } from 'rxjs';
 
 @Controller('boards')
 export class BoardsController {
@@ -24,6 +24,14 @@ export class BoardsController {
         @Body() postData: CreateBoardDto
     ): Promise<Board>{
         return this.boardsService.createBoard(postData);
+    }
+
+    @Patch('/:id')
+    async updateBoardStatus(
+        @Param('id') id: string,
+        @Body('status', BoardStatusValidationPipe) status: string
+    ): Promise<Board>{
+        return this.boardsService.changeStatusBoard(id, status);
     }
 
 }

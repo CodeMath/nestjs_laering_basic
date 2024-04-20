@@ -8,14 +8,19 @@ export class BoardStatusValidationPipe implements PipeTransform {
     ]
 
     transform(value: any) {
-        value = value.toUpperCase();
-        if (!this.isStatusValid(value)){
-            throw new BadRequestException(`${value} isn't int the status options`);
+        try {
+            value = value.toUpperCase();
+            if (!this.isStatusValid(value)) {
+                throw new BadRequestException(`${value} isn't int the status options`);
+            }
+            return value;
+        } catch (e) {
+            throw new BadRequestException(`${e}`);
         }
-        return value;
+
     }
 
-    private isStatusValid(status: any){
+    private isStatusValid(status: any) {
         const index = this.StatusOptions.indexOf(status);
         return index !== -1; // -1이면 없음
     }
